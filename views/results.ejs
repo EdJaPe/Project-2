@@ -3,6 +3,10 @@
         <% results.forEach((result) => { %>
             <li>
                 <%=result.recipe.label %>
+                <form action="/recipes/favorites"method="POST">
+                    <input hidden type="text" name="apiKey" value="<%= result.recipe.uri %>">
+                    <button id="faveButton" type="submit">Add to favorites</button>
+                </form>
             </li>
       <%  }); %>
     </ul>

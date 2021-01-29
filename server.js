@@ -5,6 +5,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const helmet = require('helmet');
 const passport = require('./config/ppConfig');
+
 const isLoggedIn = require('./middleware/isLoggedIn');
 const app = express();
 const SESSION_SECRET = process.env.SESSION_SECRET;
@@ -56,25 +57,12 @@ app.get('/', (req, res) => {
 
 
 
-app.get('/recipes', (req, res)=> {
-    axios.get(URL)
-      .then((response) => {
-        const recipes = response.data.hits
-        console.log(response)
-        res.render('recipes', {recipes: recipes});
-        // res.send(recipes)
-      })
-      .catch(function(error) {
-        console.log(error)
-      
-      })
-  }) 
   
 app.get('/results', (req, res) => {
   
   let ingredient1 = req.query.searchInput
   // console.log(req.body)
- let searchURL = `https://api.edamam.com/search?q=vegan+${ingredient1}&app_id=${API_ID}&app_key=${API_KEY}&from=0&to=30`
+  let searchURL = `https://api.edamam.com/search?q=vegan+${ingredient1}&app_id=${API_ID}&app_key=${API_KEY}&from=0&to=30`
   // console.log(req) 
  // Use request to call the API
   axios.get(searchURL).then(apiResponse => {
@@ -84,10 +72,10 @@ app.get('/results', (req, res) => {
   })
 });
 
-app.get('/recipes/:id', (req, res) => {
+// app.get('/recipes/:id', (req, res) => {
    
-  res.render('show');
-});
+//   res.render('show');
+// });
 
 
 
@@ -102,7 +90,7 @@ app.get('/search', (req, res) => {
 app.get('/profile', isLoggedIn, (req, res) => {
   res.render('profile');
 });
-
+app.use('/recipes', require('./routes/recipes'));
 app.use('/auth', require('./routes/auth'));
 // app.use('/dino', isLoggedIn, require('./routes/dinos'));
 
