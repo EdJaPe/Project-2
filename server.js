@@ -8,6 +8,7 @@ const passport = require('./config/ppConfig');
 
 const isLoggedIn = require('./middleware/isLoggedIn');
 const app = express();
+const methodOverride = require('method-override');
 const SESSION_SECRET = process.env.SESSION_SECRET;
 const API_ID = process.env.API_ID;
 const API_KEY = process.env.APPLICATION_KEY;
@@ -20,6 +21,7 @@ app.set('view engine', 'ejs');
 app.use(require('morgan')('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
+app.use(methodOverride('_method'));
 app.use(layouts);
 app.use(helmet());
 

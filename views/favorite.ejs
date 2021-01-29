@@ -1,1 +1,10 @@
 <h1>Here Are your favorite recipes</h1>
+<ul>
+    <% recipe.forEach((result) => { %>
+        <%console.log('🍽',result)%>
+        <li>
+            <h3><%=result.label %> </h3>       
+           
+        </li>
+  <%  }); %>
+</ul>
