@@ -1,10 +1,15 @@
 <h1>Here Are your favorite recipes</h1>
 <ul>
-    <% recipe.forEach((result) => { %>
-        <%console.log('🍽',result)%>
+    <% recipes.forEach((result) => { %> 
+        <% console.log('🔥', result)%>  
+        <% let img = `<img src="${result.image}" alt="${result.label}" >` %>
+        <% console.log(img)%>
         <li>
             <h3><%=result.label %> </h3>       
-           
+            <%= img %>
+            <form method="POST" action="/recipes/favorites/<%=result.label %>/?_method=DELETE" >
+                <button id="eraseBtn" type="submit">Delete</button>
+            </form>                 
         </li>
-  <%  }); %>
+    <%  }); %>
 </ul>

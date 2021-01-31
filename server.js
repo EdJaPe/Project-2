@@ -60,15 +60,16 @@ app.get('/', (req, res) => {
 
 
   
-app.get('/results', (req, res) => {
+app.get('/results', isLoggedIn, (req, res) => {
   
-  let ingredient1 = req.query.searchInput
+  let ingredient1 = '+'+req.query.searchInput1
+  let ingredient2 = '+'+req.query.searchInput2
   // console.log(req.body)
-  let searchURL = `https://api.edamam.com/search?q=vegan+${ingredient1}&app_id=${API_ID}&app_key=${API_KEY}&from=0&to=30`
+  let searchURL = `https://api.edamam.com/search?q=vegan${ingredient1}${ingredient2}&app_id=${API_ID}&app_key=${API_KEY}&from=0&to=30`
   // console.log(req) 
  // Use request to call the API
   axios.get(searchURL).then(apiResponse => {
-    console.log(apiResponse.data.hits)
+    console.log('🌤', apiResponse.data.hits)
     // let recipes = apiResponse;
     res.render('results', {results: apiResponse.data.hits});
   })
@@ -92,6 +93,8 @@ app.get('/search', (req, res) => {
 app.get('/profile', isLoggedIn, (req, res) => {
   res.render('profile');
 });
+
+// app.use('/favorites', require('./routes/favorites'));
 app.use('/recipes', require('./routes/recipes'));
 app.use('/auth', require('./routes/auth'));
 // app.use('/dino', isLoggedIn, require('./routes/dinos'));

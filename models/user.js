@@ -1,5 +1,5 @@
 'use strict';
-const  bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 
 const {
   Model
@@ -13,17 +13,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.user.belongsToMany(models.recipe, {through:'usersrecipes'})
-      models.user.belongsToMany(models.favorite, {through:'usersfavorites'})
-      models.user.hasMany(models.createdRecipe)
+      models.user.hasMany(models.favorite)
+
     }
-    validPassword(typedPassword){
-      let isValid = bcrypt.compareSync(typedPassword, this.password);
+
+    validPassword(typedPassword) {
+      let isValid = bcrypt.compareSync(typedPassword, this.password); // returns a boolean
       return isValid;
     }
 
     toJSON() {
-      let userData = this.get()
+      let userData = this.get();
       delete userData.password;
       return userData;
     }
@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         len: {
           args: [8, 99],
-          msg: 'Password must be at least 8 characters and 99 characters'
+          msg: 'Password must be between 8 and 99 characters long'
         },
         notContains: {
           args: this.name,
@@ -62,14 +62,12 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     hooks: {
       beforeCreate: (pendingUser, options) => {
-          // check if there is a user being passed and That that user has a password
+        // check if there is a user being passed AND that that user has a password
         if (pendingUser && pendingUser.password) {
-          //hash the pass
-
+          // hash the pass
           let hash = bcrypt.hashSync(pendingUser.password, 12);
-          // store
+          // store the hash as the user's pass
           pendingUser.password = hash
-
         }
       }
     },
@@ -78,4 +76,3 @@ module.exports = (sequelize, DataTypes) => {
   });
   return user;
 };
-
