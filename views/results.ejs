@@ -1,16 +1,17 @@
 <h1>Results here</h1>
     <% console.log('🍄',currentUser) %>
     <ul>
-        <% results.forEach((result) => { %>
-            <li>
-                <h3><%=result.recipe.label %> </h3>       
-                <form action="/recipes/favorites"method="POST">
-                    <input hidden type="text" name="label" value="<%= result.recipe.label %>">
-                    <input hidden type="text" name="uri" value="<%= result.recipe.uri.split('#recipe_').pop()%>">
-                    <input hidden type="text" name="userId" value="<%= currentUser.dataValues.id%>">
-                    <input hidden type="text" name="image" value="<%= result.recipe.image %>">
-                    <button id="faveButton" type="submit">Add to favorites</button>
-                </form>
-            </li>
-      <%  }); %>
+        <!-- all recipes and then select an individual recipe -->
+        <div class="container">
+            <div class="recipeCollection">
+                <% results.forEach(function(result) { %>
+                    <li>                
+                        <% let encoded = encodeURIComponent( result.recipe.uri ); %>
+                        <%console.log('🤡',encoded)%>
+                        <h3> Recipe: <%= result.recipe.label %></h3> 
+                        <a href="/recipes/results/<%= encoded %>">View Recipe</a>
+                            <% }); %>                            
+                    </li>
+             </div>    
+        </div>
     </ul>

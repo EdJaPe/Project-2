@@ -3,12 +3,17 @@
     <% recipes.forEach((result) => { %> 
         <% console.log('🔥', result)%>  
         <% let img = `<img src="${result.image}" alt="${result.label}" >` %>
-        <% console.log(img)%>
+        
         <li>
-            <h3><%=result.label %> </h3>       
+            <h3><%=result.label %> </h3> 
+        
+            <% let encoded = encodeURIComponent( result.uri ); %> 
+            <%console.log('🎃',encoded)%>     
             <%= img %>
+            <a href="/recipes/results/<%= encoded %>">View Recipe</a> <br> 
             <form method="POST" action="/recipes/favorites/<%=result.label %>/?_method=DELETE" >
-                <button id="eraseBtn" type="submit">Delete</button>
+              
+                <button id="dltBtn" class="button" type="submit">Delete</button>
             </form>                 
         </li>
     <%  }); %>

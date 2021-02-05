@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method'));
 app.use(layouts);
-app.use(helmet());
+app.use(helmet({contentSecurityPolicy:false}));
 
 app.use(session({
   secret: SESSION_SECRET,

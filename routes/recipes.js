@@ -3,35 +3,12 @@ const express = require('express');
 const isLoggedIn = require('../middleware/isLoggedIn');
 const router = express.Router();
 const db = require("../models")
+const API_ID = process.env.API_ID;
+const API_KEY = process.env.APPLICATION_KEY;
+const URL = `https://api.edamam.com/search?q=vegan&app_id=${API_ID}&app_key=${API_KEY}&from=0&to=30`;
 
 
 
-
-// router.get('/', (req, res) => {
-//   axios.get(URL)
-//     .then((response) => {
-//       const recipes = response.data.hits
-//       console.log('🌪',response)
-//       res.render('recipes', { recipes: recipes });
-//       // res.send(recipes)
-//     })
-//     .catch(function (error) {
-//       console.log(error)
-
-//     })
-// })
-
-// get/result - return a page with favorite Recipes
-// router.get('/results', function (req, res) {
-//   // TODO: Get all records from DB and render to view
-//   // access the data from recipes data base
-//   db.favorite.findAll()
-//     .then(recipe => {
-//       console.log('🥑', recipe)
-//       res.render('favorite', { recipe: recipe })
-//     })
-
-// });
 
 //GET ROUTES
 router.get('/favorites', isLoggedIn, function (req, res) {
@@ -48,9 +25,75 @@ router.get('/favorites', isLoggedIn, function (req, res) {
   }).catch(err => {
     console.log(err)
   })
-
 })
 
+router.get('/usersrecipe/:id', (req,res) => {
+  console.log('🐠',req.params)
+  db.createdRecipe.findOne({
+    where:{
+      id:req.params.id
+    }
+  }).then((newRecipe) => {
+    console.log('👽',newRecipe)
+    res.render('showRecipe',{newRecipe:newRecipe})
+  })
+  
+})
+
+router.get('/usersrecipe', isLoggedIn, function(req, res) {
+  console.log('🌎', req.body)
+  db.createdRecipe.findAll({
+    where: {
+      userId:req.user.id
+    }
+  }).then((createdRep) => {
+    console.log('🌈',createdRep)
+    res.render('usersRecipes', {created: createdRep})
+
+  }).catch(error => {
+    console.log(error)
+  })
+})
+
+
+router.get('/create', (req,res) =>{
+    res.render('createRecipe')
+})
+
+
+router.post('/create', isLoggedIn, (req,res) =>{
+  db.createdRecipe.findOrCreate({
+    where: {
+      userId: req.body.userId,
+      name: req.body.recipe,
+      ingredients: req.body.ingredients,
+      directions: req.body.directions
+    },
+  }).then(([newRecipe, created]) => {
+    console.log(newRecipe)
+    res.redirect('/recipes/usersrecipe')
+  })
+})
+
+// I left  off  here Jan 30 2021👀
+router.get('/results/:uri', (req,res) => {
+  console.log('🦋', req.params.uri)
+  const label = encodeURIComponent(req.params.uri);
+  // let label = 'Raw Vegan Coconut Almond Macaroons'
+  // let ingredient1 = '+'+req.query.searchInput1
+  // let ingredient2 = '+'+req.query.searchInput2
+  // console.log(req.body)
+  let infoURL = `https://api.edamam.com/search?r=${label}&app_id=${API_ID}&app_key=${API_KEY}`
+
+  // console.log(req.body)
+  // let infoURL = `${URL}&label=${label}`
+  axios.get(infoURL).then(infoResponse => {
+    console.log('💄',infoResponse)
+    res.render('showResults',{result: infoResponse.data[0]})
+  }).catch(err => {
+    console.log(err)
+  })
+});
 
 //POST ROUTES
 router.post('/favorites', isLoggedIn, function (req, res) {
@@ -84,12 +127,24 @@ router.post('/favorites', isLoggedIn, function (req, res) {
 
 router.delete('/favorites/:label', function(req,res) {
   db.favorite.destroy({
-    where: {label: req.params.label}
+    where: {
+      label: req.params.label
+    }
   }).then(function(data){
     res.redirect('/recipes/favorites')
   });
 });
-
+router.delete('/usersrecipe/:name', function(req,res) {
+  console.log('🐸',req.params.name)
+  db.createdRecipe.destroy({
+    where: {
+      name: req.params.name
+    }
+  }).then(function(data){
+    console.log('⛑',data)
+    res.redirect('/recipes/usersrecipe')
+  });
+});
 
 
 // .then redirect to /results

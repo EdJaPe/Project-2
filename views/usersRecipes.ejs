@@ -1,0 +1,15 @@
+<h1>My recipes</h1>
+    <ul>
+        <% created.forEach((newRecipe) => { %>
+             <% console.log('🦷',newRecipe)%>  
+
+             <li>
+                 <h3><%=newRecipe.name%></h3>
+                 <a href="/recipes/usersrecipe/<%=newRecipe.id%>">View Recipe</a> <br> 
+            <form method="POST" action="/recipes/usersrecipe/<%=newRecipe.name %>/?_method=DELETE" >
+              
+                <button class="button" type="submit">Delete</button>
+            </form>                 
+             </li>
+             <%})%>
+    </ul>

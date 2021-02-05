@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta Content-Security-Policy: default-src self>
+    <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://www.edamam.com; child-src 'none'; object-src 'none'"> -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src *;
+   img-src * 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *;
+   style-src  'self' 'unsafe-inline' *"> -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>HungryVegan</title>
@@ -14,7 +19,10 @@
             <li><a href="/auth/logout">Logout</a></li>
             <li><a href="/profile">Profile</a></li>
             <li> <a href="/search">Search Page</a></li>
-            <li> <a href="/recipes/favorites">Favorite Recipes</a></li>
+            <li> <a href="/recipes/favorites">Favorite Recipes</a></li>    
+            <li> <a href="/recipes/usersrecipe">Created Recipes</a></li>  
+            <li> <a href="/recipes/create">Create</a></li>  
+
             <% } else { %>
               <li><a href="/auth/signup">Signup</a></li>
               <li><a href="/auth/login">Login</a></li>

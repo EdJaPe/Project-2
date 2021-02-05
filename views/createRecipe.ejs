@@ -1,0 +1,27 @@
+<h1>Create your own recipe</h1>
+    <form method="POST" action="/recipes/create">
+        <input hidden type="text" name="userId" value="<%= currentUser.dataValues.id%>">
+        <div>
+            
+            <div class="newRecipe" id="recipeName">
+                <label for=""  >Name of your Recipe</label>
+                <input type="text" class="form-control" id="recipe" name="recipe" required>
+            </div>
+            <div class="newRecipe" id="ingredients">
+                <label for="ingredients"  >Ingredients here</label>
+                <input type="text" class="ingredients"  name="ingredients"> 
+                <input type="text" class="ingredients"  name="ingredients"> 
+                <input type="text" class="ingredients"  name="ingredients"> 
+                <input type="text" class="ingredients"  name="ingredients"> 
+                <input type="text" class="ingredients"  name="ingredients"> 
+                <input type="text" class="ingredients"  name="ingredients"> 
+                <input type="text" class="ingredients"  name="ingredients"> 
+        
+            </div >
+            <div class="newRecipe" id="directions">
+                <textarea type="text" id="directions" name="directions" required></textarea>
+            </div >
+            
+            <button class="button"type="submit">Create </button>
+        </div>
+    </form>

@@ -1,0 +1,11 @@
+<h1>Recipe information</h1>
+<h3><%=result.label%> </h3>
+<img src="<%=result.image%>" alt="<%=result.label%>">
+
+<form action="/recipes/favorites"method="POST">
+    <input hidden type="text" name="label" value="<%= result.label %>">
+    <input hidden type="text" name="uri" value="<%= result.uri%>">
+    <input hidden type="text" name="userId" value="<%= currentUser.dataValues.id%>">
+    <input hidden type="text" name="image" value="<%= result.image %>">
+    <button id="faveButton" type="submit">Add to favorites</button>
+</form>
